@@ -1,6 +1,10 @@
 name: 01 - CI
 
 on:
+  pull_request:
+    branches:
+      - main
+
   # Trigger the workflow on push to main branch
   push:
     branches:
