@@ -157,6 +157,7 @@ jobs:
         run: az acr login --name ${{ vars.ACR_NAME }}
 
       - name: Build Docker image
-        run: docker build --platform linux/amd64 -t "${{ vars.ACR_LOGIN_SERVER }}/${{ matrix.image }}:${{ github.sha }}" "./${{ matrix.service }}"
-      - name: Push Docker image
-        run: docker push "${{ vars.ACR_LOGIN_SERVER }}/${{ matrix.image }}:${{ github.sha }}"
+        run: docker build --platform linux/amd64 -t ${{ vars.ACR_LOGIN_SERVER }}/${{ matrix.image }}:${{ github.sha }} ./${{ matrix.service }}
+
+      - name: Push Docker image with commit SHA
+        run: docker push ${{ vars.ACR_LOGIN_SERVER }}/${{ matrix.image }}:${{ github.sha }}
