@@ -200,3 +200,4 @@ node_modules/
 terraform/.terraform/
 terraform/*.tfstate
 terraform/*.tfstate.*
+user-service/.env.test

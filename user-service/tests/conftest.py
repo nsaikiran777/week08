@@ -19,12 +19,12 @@ from app.security import hash_password
 
 POSTGRES_USER = os.getenv("POSTGRES_USER", "postgres")
 POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "postgres")
-POSTGRES_DB = os.getenv("POSTGRES_DB", "students")
+POSTGRES_DB = os.getenv("POSTGRES_DB", "users")
 POSTGRES_HOST = os.getenv("POSTGRES_HOST", "localhost")
-POSTGRES_PORT = os.getenv("POSTGRES_PORT", "5434")
+POSTGRES_PORT = os.getenv("POSTGRES_PORT", "5433")
 
 TEST_DATABASE_URL =  os.getenv(
-    "DATABASE_URL",
+    "TEST_DATABASE_URL",
     (
         f"postgresql+psycopg2://{POSTGRES_USER}:"
         f"{POSTGRES_PASSWORD}@{POSTGRES_HOST}:"
