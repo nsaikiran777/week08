@@ -1,13 +1,27 @@
 name: AKS connection test
 on: workflow_dispatch
 jobs:
-  test:
+  default-cli:
     runs-on: ubuntu-latest
     steps:
       - uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - run: |
-          az account show --query "{sub:id,user:user.name}" -o table
-          az aks get-credentials -g "${{ vars.AKS_RESOURCE_GROUP }}" -n "${{ vars.AKS_CLUSTER_NAME }}" --overwrite-existing
-          kubectl get nodes
+      - run: az version
+      - run: az account show -o table
+        continue-on-error: true
+      - run: az aks list -o table
+        continue-on-error: true
+
+  pinned-cli:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - uses: azure/cli@v2
+        with:
+          azcliversion: 2.89.0
+          inlineScript: |
+            az account show -o table
+            az aks list -o table
