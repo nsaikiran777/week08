@@ -7,10 +7,11 @@ jobs:
       - uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - run: az version
-      - run: az account show -o table
-        continue-on-error: true
-      - run: az aks list -o table
+      - name: CLI version
+        run: az version --query '"azure-cli"' -o tsv
+      - name: get-credentials (default CLI)
+        run: |
+          az aks get-credentials -g "${{ vars.AKS_RESOURCE_GROUP }}" -n "${{ vars.AKS_CLUSTER_NAME }}" --overwrite-existing --debug 2>&1 | tail -40
         continue-on-error: true
 
   pinned-cli:
@@ -19,9 +20,10 @@ jobs:
       - uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - uses: azure/cli@v2
+      - name: get-credentials (pinned CLI)
+        uses: azure/cli@v2
         with:
           azcliversion: 2.89.0
           inlineScript: |
-            az account show -o table
-            az aks list -o table
+            az aks get-credentials -g "${{ vars.AKS_RESOURCE_GROUP }}" -n "${{ vars.AKS_CLUSTER_NAME }}" --file "$GITHUB_WORKSPACE/kubeconfig" --overwrite-existing
+            ls -l "$GITHUB_WORKSPACE/kubeconfig"
