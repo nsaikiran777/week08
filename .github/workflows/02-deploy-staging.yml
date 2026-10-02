@@ -49,18 +49,13 @@ jobs:
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Debug Azure context
-        run: |
-          az account show --query "{sub:id,name:name,user:user.name}" -o table
-          az aks list -o table
-          echo "RG='${{ vars.AKS_RESOURCE_GROUP }}' CLUSTER='${{ vars.AKS_CLUSTER_NAME }}'"
-      # 3. Connect to AKS
+            # 3. Connect to AKS
       - name: Get AKS credentials
-        uses: azure/aks-set-context@v4
-        with:
-          resource-group: ${{ vars.AKS_RESOURCE_GROUP }}
-          cluster-name: ${{ vars.AKS_CLUSTER_NAME }}
+        run: |
+          az aks get-credentials \
+            --resource-group "${{ vars.AKS_RESOURCE_GROUP }}" \
+            --name "${{ vars.AKS_CLUSTER_NAME }}" \
+            --overwrite-existing
       # 4. Create staging namespace
       - name: Create staging namespace
         run: |
