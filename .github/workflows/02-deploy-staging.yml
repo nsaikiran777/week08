@@ -50,12 +50,11 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Verify AKS configuration
+      - name: Debug Azure context
         run: |
-          echo "Resource group: '${{ vars.AKS_RESOURCE_GROUP }}'"
-          echo "Cluster name: '${{ vars.AKS_CLUSTER_NAME }}'"
-          az account show --query "{Subscription:id, Tenant:tenantId}" -o table
-
+          az account show --query "{sub:id,name:name,user:user.name}" -o table
+          az aks list -o table
+          echo "RG='${{ vars.AKS_RESOURCE_GROUP }}' CLUSTER='${{ vars.AKS_CLUSTER_NAME }}'"
       # 3. Connect to AKS
       - name: Get AKS credentials
         run: |
