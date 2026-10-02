@@ -57,12 +57,10 @@ jobs:
           echo "RG='${{ vars.AKS_RESOURCE_GROUP }}' CLUSTER='${{ vars.AKS_CLUSTER_NAME }}'"
       # 3. Connect to AKS
       - name: Get AKS credentials
-        run: |
-          az aks get-credentials \
-            --resource-group "${{ vars.AKS_RESOURCE_GROUP }}" \
-            --name "${{ vars.AKS_CLUSTER_NAME }}" \
-            --overwrite-existing
-
+        uses: azure/aks-set-context@v4
+        with:
+          resource-group: ${{ vars.AKS_RESOURCE_GROUP }}
+          cluster-name: ${{ vars.AKS_CLUSTER_NAME }}
       # 4. Create staging namespace
       - name: Create staging namespace
         run: |
